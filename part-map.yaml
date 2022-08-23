@@ -1,0 +1,364 @@
+
+Front: &front_params
+    manufacturer_part_number: Part Number
+    digi_key_part_number: Vendor Part Number
+    manufacturer: Manufacturer
+    $stock: Stock
+
+Rear: &rear_params
+    price: Price
+    product_url: Link
+    primary_datasheet: Datasheet
+    $notes: Notes
+
+Diodes:
+    Taxonomies:
+        - Discrete Semiconductor Products/Diodes - Rectifiers - Single
+    Front: *front_params
+    Parameters:
+        Package / Case: Package
+        Diode Type: Diode Type
+        Current - Average Rectified (Io): Current
+        Voltage - Forward (Vf) (Max) @ If: Forward Voltage
+        Voltage - DC Reverse (Vr) (Max): Reverse Voltage
+        Current - Reverse Leakage @ Vr: Reverse Leakage
+        Speed: Rev. Recovery Time
+        Capacitance @ Vr, F: Capacitance
+        Part Status: Status
+    Rear: *rear_params
+
+Zeners:
+    Taxonomies:
+        - Discrete Semiconductor Products/Diodes - Zener - Single
+    Front: *front_params
+    Parameters:
+        Package / Case: Package
+        Voltage - Zener (Nom) (Vz): Zener Voltage
+        Voltage - Forward (Vf) (Max) @ If: Forward Voltage
+        Impedance (Max) (Zzt): Impedance
+        Current - Reverse Leakage @ Vr: Reverse Leakage
+        Tolerance: Tolerance
+        Power - Max: Power
+        Part Status: Status
+    Rear: *rear_params
+    
+BJTs:
+    Taxonomies:
+        - Discrete Semiconductor Products/Transistors - Bipolar (BJT) - Arrays
+        - Discrete Semiconductor Products/Transistors - Bipolar (BJT) - Single
+        - Discrete Semiconductor Products/Transistors - Bipolar (BJT) - RF
+    Front: *front_params
+    Parameters:
+        Package / Case: Package
+        Transistor Type: Transistor Type
+        Current - Collector Cutoff (Max): Collector Cutoff
+        Current - Collector (Ic) (Max): Collector Current (Max)
+        Voltage - Collector Emitter Breakdown (Max): Vce (Max)
+        Vce Saturation (Max) @ Ib, Ic: Vce (Sat)
+        Power - Max: Power
+        DC Current Gain (hFE) (Min) @ Ic, Vce: hFE
+        Part Status: Status
+    Rear: *rear_params
+
+FETs:
+    Taxonomies:
+        - Discrete Semiconductor Products/Transistors - FETs, MOSFETs - Single
+    Front: *front_params
+    Parameters:
+        Package / Case: Package
+        FET Type: FET Type
+        FET Feature: Drive Mode
+        Current - Continuous Drain (Id) @ 25°C: Drain Current (Max)
+        Drain to Source Voltage (Vdss): Vds (Max)
+        Power Dissipation (Max): Power (Max)
+        Rds On (Max) @ Id, Vgs: Rds On (Max)
+        Vgs(th) (Max) @ Id: Vgs(th)
+        Input Capacitance (Ciss) (Max) @ Vds: Input Cap.
+        Part Status: Status
+    Rear: *rear_params
+
+Analog Switches & Multiplexers:
+    Taxonomies:
+        - Integrated Circuits (ICs)/Interface/Analog Switches, Multiplexers, Demultiplexers
+    Front: *front_params
+    Parameters:
+        Package / Case: Package
+        product_description: Description
+        Independent Circuits: Number of Circuits
+        Multiplexer/Demultiplexer Circuit: Circuit
+        Switch Circuit: Switch Type
+        Voltage - Supply, Single (V+): Supply Voltage (Single)
+        Voltage - Supply, Dual (V±): Supply Voltage (Dual)
+        On-State Resistance (Max): On-State Resistance
+        Channel-to-Channel Matching (&Delta;Ron): Channel Matching
+        Crosstalk: Crosstalk
+        Switch Time (Ton, Toff) (Max): Switch Time
+        -3db Bandwidth: -3db Bandwidth
+        Part Status: Status
+    Rear: *rear_params
+
+Op Amps:
+    Taxonomies:
+        - Integrated Circuits (ICs)/Linear - Amplifiers - Instrumentation, OP Amps, Buffer Amps
+        - Integrated Circuits (ICs)/Linear/Linear/Instrumentation, OP Amps, Buffer Amps
+    Front: *front_params
+    Parameters:
+        Package / Case: Package
+        Voltage - Supply Span (Min): Supply Voltage (min)
+        Voltage - Supply Span (Max): Supply Voltage (max)
+        Current - Supply: Supply Current
+        Slew Rate: Slew Rate
+        Gain Bandwidth Product: GBP
+        Voltage - Input Offset: Input Offset
+        Current - Input Bias: Input Bias
+        Current - Output / Channel: Output Current
+        Output Type: Output Type
+        Amplifier Type: Amplifier Type
+        Number of Circuits: Circuits
+        Part Status: Status
+    Rear: *rear_params
+
+Audio Amplifiers:
+    Taxonomies:
+        - Integrated Circuits (ICs)/Linear/Linear/Audio Amplifiers
+    Front: *front_params
+    Parameters:
+        Package / Case: Package
+        detailed_description: Description
+        Output Type: Output Type
+        Voltage - Supply: Supply Voltage
+        Max Output Power x Channels @ Load: Power (Max)
+        Features: Features
+        Part Status: Status
+    Rear: *rear_params
+    
+Logic - Gates:
+    Taxonomies:
+        - Integrated Circuits (ICs)/Logic/Gates and Inverters - Multi-Function, Configurable
+    Front: *front_params
+    Parameters:
+        Package / Case: Package
+        detailed_description: Description
+        Logic Type: Function
+        Number of Circuits: Number of Circuits
+        Number of Inputs: Gate Inputs
+        Voltage - Supply: Supply Voltage
+        Logic Level - Low: Logic Low
+        Logic Level - High: Logic High
+        Current - Output High, Low: Output Current (High/Low)
+        Max Propagation Delay @ V, Max CL: Delay
+        Part Status: Status
+    Rear: *rear_params
+
+Logic - Sequential:
+    Taxonomies:
+        - Integrated Circuits (ICs)/Logic/Latches
+    Front: *front_params
+    Parameters:
+        Package / Case: Package
+        detailed_description: Description
+        Logic Type: Function
+        Number of Circuits: Number of Circuits
+        Circuit: Circuit
+        Number of Inputs: Gate Inputs
+        Voltage - Supply: Supply Voltage
+        Logic Level - Low: Logic Low
+        Logic Level - High: Logic High
+        Current - Output High, Low: Output Current (High/Low)
+        Max Propagation Delay @ V, Max CL: Delay
+        Part Status: Status
+    Rear: *rear_params
+
+Memory:
+    Taxonomies:
+        - Integrated Circuits (ICs)/Memory/Memory
+    Front: *front_params
+    Parameters:
+        Package / Case: Package
+        detailed_description: Description
+        Technology: Memory Format
+        Memory Size: Memory Size
+        Memory Interface: Memory Interface
+        Voltage - Supply: Supply Voltage
+        Clock Frequency: Clock Frequency
+        Write Cycle Time - Word, Page: Write Cycle Time
+        Part Status: Status
+    Rear: *rear_params
+
+Processors:
+    Taxonomies:
+        - Integrated Circuits (ICs)/Embedded/Microcontrollers
+    Front: *front_params
+    Parameters:
+        Package / Case: Package
+        detailed_description: Description
+        Core Processor: Core Processor
+        series: Series
+        Core Size: Core Size
+        Speed: Speed
+        Program Memory Size: Memory Size
+        Program Memory Type: Memory Type
+        RAM Size: RAM Size
+        Number of I/O: IO Count
+        Data Converters: Converters
+        Connectivity: Interfaces
+        Peripherals: Peripherals
+        Voltage - Supply (Vcc/Vdd): Supply Voltage
+        Part Status: Status
+    Rear: *rear_params
+
+Translators & Level Shifters:
+    Taxonomies:
+        - Integrated Circuits (ICs)/Logic/Translators, Level Shifters
+    Front: *front_params
+    Parameters:
+        Package / Case: Package
+        detailed_description: Description
+        Translator Type: Type
+        Channel Type: Channel Type
+        Voltage - VCCA: VCCA
+        Voltage - VCCB: VCCB
+        Data Rate: Data Rate
+        Number of Circuits: Circuits
+        Channels per Circuit: Channels/Circuit
+        Output Type: Output Type
+        Input Signal: Input Signal
+        Output Signal: Output Signal
+        Features: Features
+        Part Status: Status
+    Rear: *rear_params
+    
+Clocks:
+    Taxonomies:
+        - Crystals, Oscillators, Resonators/Crystals
+    Front: *front_params
+    Parameters:
+        Package / Case: Package
+        detailed_description: Description
+        Type: Type
+        Frequency: Frequency
+        Frequency Stability: Stability
+        Frequency Tolerance: Tolerance
+        Load Capacitance: Capacitance
+        ESR (Equivalent Series Resistance): ESR
+        Operating Mode: Operating Mode
+        Part Status: Status
+    Rear: *rear_params
+
+Timers:
+    Taxonomies:
+        - Integrated Circuits (ICs)/Clock/Timing/Programmable Timers and Oscillators
+    Front: *front_params
+    Parameters:
+        Package / Case: Package
+        detailed_description: Description
+        Type: Type
+        Frequency: Frequency
+        Count: Count
+        Voltage - Supply: Supply Voltage
+        Current - Supply: Supply Current
+        Part Status: Status
+    Rear: *rear_params
+    
+Linear Regulators:
+    Taxonomies:
+        - Integrated Circuits (ICs)/Power Management (PMIC)/Linear + Switching Regulators
+    Front: *front_params
+    Parameters:
+        Package / Case: Package
+        Voltage - Input (Max): Input Voltage (Max)
+        Voltage - Output (Min/Fixed): Output Voltage (Min/Fixed)
+        Voltage - Output (Max): Output Voltage (Max)
+        Voltage Dropout (Max): Voltage Dropout
+        Current - Output: Output Current (Max)
+        Output Type: Output Type
+        Output Configuration: Output Config
+        PSRR: PSRR
+        Number of Regulators: Number of Regs
+        Part Status: Status
+    Rear: *rear_params
+
+Linear Regulator Drivers:
+    Taxonomies:
+        - Integrated Circuits (ICs)/Power Management (PMIC)/Linear Regulators
+    Front: *front_params
+    Parameters:
+        Package / Case: Package
+        Type: Type
+        Voltage - Input: Input Voltage
+        Current - Supply: Supply Current
+        Number of Outputs: Number of Outputs
+        Part Status: Status
+    Rear: *rear_params
+
+Voltage References:
+    Taxonomies:
+        - Integrated Circuits (ICs)/Power Management (PMIC)/Voltage Reference
+    Front: *front_params
+    Parameters:
+        Package / Case: Package
+        Reference Type: Reference Type
+        Output Type: Output Type
+        Voltage - Input: Input Voltage
+        Voltage - Output (Min/Fixed): Output Voltage (Min/Fixed)
+        Voltage - Output (Max): Output Voltage (Max)
+        Tolerance: Tolerance
+        Current - Output: Output Current
+        Current - Supply: Supply Current
+        Noise - 0.1Hz to 10Hz: Noise (0.1Hz - 10Hz)
+        Noise - 10Hz to 10kHz: Noise (10Hz - 10kHz)
+        Temperature Coefficient: Temp. Coeff.
+        Part Status: Status
+    Rear: *rear_params
+    
+Switching Regulators:
+    Taxonomies:
+        - Integrated Circuits (ICs)/Power Management (PMIC)/DC DC Switching Regulators
+        - Integrated Circuits (ICs)/PMIC - Voltage Regulators - DC DC Switching Regulators
+    Front: *front_params
+    Parameters:
+        Package / Case: Package
+        Function: Function
+        Output Configuration: Output Config
+        Topology: Topology
+        Output Type: Output Type
+        Voltage - Input (Min): Input Voltage (Min)
+        Voltage - Input (Max): Input Voltage (Max)
+        Voltage - Output (Min/Fixed): Output Voltage (Min/Fixed)
+        Voltage - Output (Max): Output Voltage (Max)
+        Current - Output: Output Current (Max)
+        Frequency - Switching: Switching Freq.
+        Number of Outputs: Number of Outputs
+        Part Status: Status
+    Rear: *rear_params
+
+Power Distributors and Drivers:
+    Taxonomies:
+        - Integrated Circuits (ICs)/Power Management (PMIC)/Power Distribution Switches, Load Drivers
+    Front: *front_params
+    Parameters:
+        Package / Case: Package
+        Switch Type: Type
+        Number of Outputs: Outputs
+        Ratio - Input:Output: Input:Output
+        Input Type: Input Type
+        Output Type: Output Type
+        Output Configuration: Output Config
+        Voltage - Supply (Vcc/Vdd): Supply Voltage
+        Voltage - Load: Load Voltage
+        Current - Output (Max): Output Current (Max)
+        Rds On (Typ): Rds On
+        Interface: Interface
+        Fault Protection: Protection
+        Features: Features
+        Part Status: Status
+    Rear: *rear_params
+
+Unsorted:
+    Taxonomies: []
+    Front: *front_params
+    Parameters:
+        product_description: Description
+        detailed_description: Details
+        taxonomy: Taxonomy
+    Rear: *rear_params

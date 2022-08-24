@@ -15,7 +15,6 @@ class PartsCache:
 
     def __del__(self):
         """Destroy PartsCache."""
-        print("closing cache")
         self._db.close()
 
     def __iter__(self):

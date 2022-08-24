@@ -51,7 +51,6 @@ class Library:
 
     def __del__(self):
         """Force the parts to delete immediately."""
-        print("Deleting library")
         del(self._parts)
 
     def _get_workbook(self, path: str) -> Workbook:
@@ -67,13 +66,16 @@ class Library:
         """Get the part from the cache."""
         return self._parts.get_part(digikey_part_number)
 
-    def add_part(self, digikey_part_number: str):
+    def add_part(self, digikey_part_number: str, stock: int = None):
         """Add the part to the worksheet, and also to the cache, if it's not there."""
         if digikey_part_number not in self._parts:
             self._parts.update_part(digikey_part_number)
 
         if self.find_part_row(digikey_part_number) is None:
-            self.add_part_row(digikey_part_number)
+            if stock is None:
+                self.add_part_row(digikey_part_number)
+            else:
+                self.add_part_row(digikey_part_number, stock=stock)
 
     def add_parts(self, part_numbers: list[str]):
         """Add multiple parts."""
@@ -117,7 +119,7 @@ class Library:
     def _update_sheets(self):
         """Ensure that all sheets defined in the part map exist."""
         for name, config in self._map.items():
-            if "Taxonomies" in config and name not in self._wb.worksheets:
+            if "Taxonomies" in config and name not in self._wb.sheetnames:
                 self._make_sheet(name, config)
 
     def _sheet_header(self, config) -> list[str]:
@@ -134,7 +136,7 @@ class Library:
 
     def _make_sheet(self, name: str, config: dict) -> Worksheet:
         """Make the sheet and table defined by name and config."""
-        ntables = len(self._wb.worksheets) + 1
+        ntables = len([sheet for sheet in self._wb.sheetnames if sheet != "Sheet"]) + 1
         ws = self._wb.create_sheet(name)
         try:
             header = self._sheet_header(config)
@@ -151,8 +153,11 @@ class Library:
         ws.freeze_panes = "B2"
         return ws
 
-    def make_part_row(self, digikey_part_number: str) -> list[str]:
-        """Make a row from the given part number."""
+    def make_part_row(self, digikey_part_number: str, **kwargs) -> list[str]:
+        """Make a row from the given part number.
+
+        You can use kwargs to define starting values for the '$' parameters
+        """
         part = self._parts.get_part(digikey_part_number)
         name, config = self.get_sheet_config(digikey_part_number)
         row = []
@@ -162,7 +167,10 @@ class Library:
             for key in params.keys():
                 try:
                     if key[0] == "$":
-                        row.append("")
+                        if key[1:] in kwargs:
+                            row.append(kwargs[key[1:]])
+                        else:
+                            row.append("")
                     else:
                         row.append(parse_cell_string(part[key]))
                 except PartError:
@@ -211,10 +219,10 @@ class Library:
         else:
             self._update_part_row(row, digikey_part_number)
 
-    def add_part_row(self, digikey_part_number: str):
+    def add_part_row(self, digikey_part_number: str, **kwargs):
         """Add a row for the given part to the correct sheet."""
         ws = self.get_sheet(digikey_part_number, create=True)
-        row = self.make_part_row(digikey_part_number)
+        row = self.make_part_row(digikey_part_number, **kwargs)
         ws.append(row)
 
     def auto_width(self):

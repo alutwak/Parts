@@ -354,6 +354,41 @@ Power Distributors and Drivers:
         Part Status: Status
     Rear: *rear_params
 
+LEDs:
+    Taxonomies:
+        - Optoelectronics/LED Indication - Discrete
+    Front: *front_params
+    Parameters:
+        Package / Case: Package
+        Color: Color
+        Wavelength - Dominant: Dominant Wavelength
+        Wavelength - Peak: Peak Wavelength
+        Millicandela Rating: Luminous Intensity (mcd)
+        Voltage - Forward (Vf) (Typ): Vf
+        Current - Test: Current
+        Configuration: Config
+        Viewing Angle: Viewing Angle
+        Lens Color: Lens Color
+        Lens Transparency: Lens Transparency
+        Part Status: Status
+    Rear: *rear_params
+
+Color Sensors:
+    Taxonomies:
+        - Sensors, Transducers/Color Sensors
+    Front: *front_params
+    Parameters:
+        Package / Case: Package
+        product_description: Description
+        detailed_description: Detailed Description
+        Voltage - Supply: Supply Voltage
+        Current - Supply (Max): Supply Current (Max)
+        Output: Output Signal
+        Resolution (Bits): Resolution (Bits)
+        Features: Features
+        Part Status: Status
+    Rear: *rear_params
+    
 Unsorted:
     Taxonomies: []
     Front: *front_params

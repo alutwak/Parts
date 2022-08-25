@@ -165,7 +165,7 @@ class Library:
         cell = toc.cell(column=1, row=entry_row)
         cell.font = font
         cell.value = sheet_name
-        cell.hyperlink = Hyperlink(ref=cell.coordinate, location=f"{sheet_name}!A1", display=sheet_name)
+        cell.hyperlink = Hyperlink(ref=cell.coordinate, location=f"'{sheet_name}'!A1", display=sheet_name)
 
     def _update_sheets(self, wb: Workbook):
         """Ensure that all sheets defined in the part map exist in the given workbook."""

@@ -13,4 +13,5 @@ setup(name="Parts",
       [console_scripts]
       addparts=addparts:main
       printpart=printpart:main
+      resheetparts=resheetparts:main
       """)

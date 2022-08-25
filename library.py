@@ -1,10 +1,14 @@
 """Defines the Library class."""
+from copy import copy
+
 import yaml
 from openpyxl import Workbook, load_workbook
 from openpyxl.worksheet.worksheet import Worksheet
 from openpyxl.worksheet.table import Table, TableStyleInfo
-from openpyxl.utils.cell import get_column_letter
+from openpyxl.utils.cell import get_column_letter, coordinate_from_string
 from openpyxl.cell.cell import Cell
+from openpyxl.styles import Font
+from openpyxl.worksheet.hyperlink import Hyperlink
 
 from digikey_api import DigikeyPartError
 
@@ -113,10 +117,8 @@ class Library:
         new_wb = self._create_workbook()
         for ws in self._wb.worksheets:
             col = self._get_part_number_column(ws.title)
-            print(f"Part number column: {col}")
             for row in ws.iter_rows(min_row=2, values_only=True):
                 part_number = row[col]
-                print(f"Part number: {part_number}")
                 try:
                     new_ws = self._get_sheet(new_wb, part_number)
                 except DigikeyPartError:
@@ -142,42 +144,28 @@ class Library:
         wb = Workbook()
         del(wb["Sheet"])
         wb.loaded_theme = DEFAULT_THEME
+        self._make_toc(wb)
         self._update_sheets(wb)
         return wb
 
-    def _get_part_config(self, digikey_part_number: str) -> (str, dict):
-        """Get the sheet configuration on which the part belongs."""
-        part = self.get_part(digikey_part_number)
-        for name, conf in self._map.items():
-            if "Taxonomies" in conf and part.taxonomy in conf['Taxonomies']:
-                return (name, conf)
-        return ("Unsorted", self._map["Unsorted"])
+    def _make_toc(self, wb: Workbook) -> Worksheet:
+        """Make the table of contents sheet."""
+        ws = wb.create_sheet(title="Contents", index=0)
+        ws.column_dimensions['A'].width = 800
+        cell = ws.cell(column=1, row=1, value="Contents")
+        font = Font(size=20.0, bold=True)
+        cell.font = font
+        return ws
 
-    def _get_sheet(self, wb: Workbook, digikey_part_number: str, create: bool = False) -> Worksheet:
-        """Get the sheet on which the part belongs."""
-        name, config = self._get_part_config(digikey_part_number)
-        try:
-            return wb.get_sheet_by_name(name)
-        except KeyError:
-            if create:
-                # Create a new sheet and the table that goes on it
-                return self._make_sheet(wb, name, config)
-
-    def _get_sheet_config(self, sheet_name: str) -> dict:
-        """Return the configuration for the given sheet name."""
-        return self._map[sheet_name]
-
-    def _get_part_number_column(self, sheet_name: str) -> int:
-        """Return the column of the digikey part number for the given sheet."""
-        col = 0
-        for section, config in self._get_sheet_config(sheet_name).items():
-            if section == "Taxonomies":
-                continue
-            for key in config.keys():
-                if key == "digi_key_part_number":
-                    return col
-                col += 1
-        raise PartError(f"Unable to get part number column for {sheet_name} sheet")
+    def _make_toc_entry(self, wb: Workbook, sheet_name: str):
+        """Make an entry in the table of contents."""
+        toc = wb['Contents']
+        entry_row = coordinate_from_string(toc.dimensions.split(":")[1])[1] + 1
+        font = Font(size=20.0, underline="single", color="FF880088")
+        cell = toc.cell(column=1, row=entry_row)
+        cell.font = font
+        cell.value = sheet_name
+        cell.hyperlink = Hyperlink(ref=cell.coordinate, location=f"{sheet_name}!A1", display=sheet_name)
 
     def _update_sheets(self, wb: Workbook):
         """Ensure that all sheets defined in the part map exist in the given workbook."""
@@ -214,7 +202,42 @@ class Library:
             col.name = head
         ws.add_table(table)
         ws.freeze_panes = "B2"
+        self._make_toc_entry(wb, name)
         return ws
+
+    def _get_part_config(self, digikey_part_number: str) -> (str, dict):
+        """Get the sheet configuration on which the part belongs."""
+        part = self.get_part(digikey_part_number)
+        for name, conf in self._map.items():
+            if "Taxonomies" in conf and part.taxonomy in conf['Taxonomies']:
+                return (name, conf)
+        return ("Unsorted", self._map["Unsorted"])
+
+    def _get_sheet(self, wb: Workbook, digikey_part_number: str, create: bool = False) -> Worksheet:
+        """Get the sheet on which the part belongs."""
+        name, config = self._get_part_config(digikey_part_number)
+        try:
+            return wb.get_sheet_by_name(name)
+        except KeyError:
+            if create:
+                # Create a new sheet and the table that goes on it
+                return self._make_sheet(wb, name, config)
+
+    def _get_sheet_config(self, sheet_name: str) -> dict:
+        """Return the configuration for the given sheet name."""
+        return self._map[sheet_name]
+
+    def _get_part_number_column(self, sheet_name: str) -> int:
+        """Return the column of the digikey part number for the given sheet."""
+        col = 0
+        for section, config in self._get_sheet_config(sheet_name).items():
+            if section == "Taxonomies":
+                continue
+            for key in config.keys():
+                if key == "digi_key_part_number":
+                    return col
+                col += 1
+        raise PartError(f"Unable to get part number column for {sheet_name} sheet")
 
     def _key_column_name(self, digikey_part_number: str) -> str:
         """Get the key column name for the given config."""

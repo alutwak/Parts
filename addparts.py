@@ -54,9 +54,10 @@ def main():
                                                     " Optional stock values can be included for each part by adding a "
                                                     " comma-separated integer after the part number."))
     parser.add_argument("-p", "--part", action="append", help="Part number to add")
-    parser.add_argument("-s", "--stock", action="append", help=("Stock associated with each part. This is optional,"
-                                                                " but if it is used, each part must have an associated"
-                                                                " stock number."))
+    parser.add_argument("-s", "--stock", action="append",
+                        type=int, help=("Stock associated with each part. This is optional,"
+                                        " but if it is used, each part must have an associated"
+                                        " stock number."))
     parser.add_argument("-C", "--cached", action="store_true", help="Add all parts from the cache")
     parser.add_argument("-c", "--continue_on_error", action="store_true", help="Continue on an error")
     parser.add_argument("--config", default=PARTS_MAP_PATH, help="Path to a custom parts map configuration")

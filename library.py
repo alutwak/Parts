@@ -1,6 +1,4 @@
 """Defines the Library class."""
-from copy import copy
-
 import yaml
 from openpyxl import Workbook, load_workbook
 from openpyxl.worksheet.worksheet import Worksheet
@@ -69,9 +67,9 @@ class Library:
 
         if self.find_part_row(digikey_part_number) is None:
             if stock is None:
-                self.add_part_row(digikey_part_number)
+                self._add_part_row(self._wb, digikey_part_number)
             else:
-                self.add_part_row(digikey_part_number, stock=stock)
+                self._add_part_row(self._wb, digikey_part_number, stock=stock)
 
     def add_parts(self, part_numbers: list[str]):
         """Add multiple parts."""
@@ -82,7 +80,7 @@ class Library:
         """Add all cached parts to the workbook."""
         for part in self._parts:
             if self.find_part_row(part) is None:
-                self.add_part_row(part)
+                self._add_part_row(self._wb, part)
 
     def find_part_row(self, digikey_part_number: str) -> tuple[Cell]:
         """Find the row for the given part."""
@@ -102,29 +100,35 @@ class Library:
         """Update the row for a part."""
         row = self.find_part_row(digikey_part_number)
         if row is None:
-            self.add_part_row(digikey_part_number)
+            self._add_part_row(digikey_part_number)
         else:
             self._update_part_row(row, digikey_part_number)
-
-    def add_part_row(self, digikey_part_number: str, **kwargs):
-        """Add a row for the given part to the correct sheet."""
-        ws = self._get_sheet(self._wb, digikey_part_number, create=True)
-        row = self._make_part_row(digikey_part_number, **kwargs)
-        ws.append(row)
 
     def resheet_parts(self):
         """Place all of the parts into the correct sheet, according to the map."""
         new_wb = self._create_workbook()
-        for ws in self._wb.worksheets:
-            col = self._get_part_number_column(ws.title)
+        for name, config in self._map.items():
+            if name not in self._wb:
+                continue
+            ws = self._wb[name]
+            pncol = self._get_part_number_column(name)
             for row in ws.iter_rows(min_row=2, values_only=True):
-                part_number = row[col]
+                part_number = row[pncol]
+
+                params = []
+                for section, conf in config.items():
+                    if section == "Taxonomies":
+                        continue
+                    params.extend(conf.keys())
+
+                kwargs = {key[1:]: cell for cell, key in zip(row, params) if key[0] == "$"}
                 try:
+                    self._add_part_row(new_wb, part_number, **kwargs)
                     new_ws = self._get_sheet(new_wb, part_number)
                 except DigikeyPartError:
                     # If the part number doesn't exist at digikey, fall back to old sheet name
                     new_ws = new_wb.get_sheet_by_name(ws.title)
-                new_ws.append(row)
+                    new_ws.append(row)
         self._wb = new_wb
 
     def save(self):
@@ -249,6 +253,12 @@ class Library:
                     return col_name
         raise KeyError(f"Failed to find {PART_KEY} parameter in the {name} section")
 
+    def _add_part_row(self, wb: Workbook, digikey_part_number: str, **kwargs):
+        """Add a row for the given part to the correct sheet."""
+        ws = self._get_sheet(wb, digikey_part_number, create=True)
+        row = self._make_part_row(digikey_part_number, **kwargs)
+        ws.append(row)
+
     def _make_part_row(self, digikey_part_number: str, **kwargs) -> list[str]:
         """Make a row from the given part number.
 
@@ -282,10 +292,10 @@ class Library:
         name, config = self._get_part_config(digikey_part_number)
 
         params = []
-        for section, params in config.items():
+        for section, conf in config.items():
             if section == "Taxonomies":
                 continue
-            params.extend(params.keys())
+            params.extend(conf.keys())
 
         for cell, param in zip(row, params):
             if param[0] == "$" or (isinstance(cell.value, str) and cell.value[0] == "'"):

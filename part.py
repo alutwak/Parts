@@ -1,4 +1,6 @@
 
+import re
+
 from error import PartError
 
 
@@ -74,8 +76,19 @@ class Part:
                 return price
         return 0.0
 
-    def get_parameter(self, param):
-        """Get the parameter."""
+    def _dict_index_by_regex(self, d, pattern):
+        """Index a dictionary by regular expression."""
+        regex = re.compile(pattern)
+        for key, item in d.items():
+            if regex.fullmatch(key) is not None:
+                return item
+        raise KeyError(f"{pattern} not found in {self.part_number}")
+
+    def _get_parameter(self, param):
+        """Get the parameter.
+
+        The parameter may be expressed as a regular expression.
+        """
         return self._parameters[param]
 
     @property
@@ -97,10 +110,18 @@ class Part:
         elif key == "taxonomy":
             return self.taxonomy
         try:
-            return self.get_parameter(key)
+            return self._get_parameter(key)
         except KeyError:
             pass
         try:
             return self._get_value(key)
         except KeyError:
             raise PartError(f"'{key}' parameter not in part {self.part_number}")
+
+    def index_regex(self, pattern):
+        """Index the part by regular expression."""
+        try:
+            return self._dict_index_by_regex(self._parameters, pattern)
+        except KeyError:
+            pass
+        return self._dict_index_by_regex(self._dict, pattern)

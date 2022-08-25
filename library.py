@@ -261,16 +261,19 @@ class Library:
             if section == "Taxonomies":
                 continue
             for key in params.keys():
+                value = ""
                 try:
                     if key[0] == "$":
                         if key[1:] in kwargs:
-                            row.append(kwargs[key[1:]])
-                        else:
-                            row.append("")
+                            value = kwargs[key[1:]]
+                    elif key[0] == "^":
+                        value = parse_cell_string(part.index_regex(key[1:]))
                     else:
-                        row.append(parse_cell_string(part[key]))
+                        value = parse_cell_string(part[key])
                 except PartError:
-                    row.append("")
+                    pass
+
+                row.append(value)
         return row
 
     def _update_part_row(self, row: tuple[Cell], digikey_part_number: str):

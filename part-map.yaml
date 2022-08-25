@@ -11,6 +11,41 @@ Rear: &rear_params
     primary_datasheet: Datasheet
     $notes: Notes
 
+Inductors:
+    Taxonomies:
+        - Inductors, Coils, Chokes/Fixed Inductors
+    Front: *front_params
+    Parameters:
+        Package / Case: Package
+        Inductance: Inductance
+        Tolerance: Tolerance
+        Current Rating (Amps): Current
+        Current - Saturation (Isat): Isat
+        DC Resistance (DCR): DCR
+        Q @ Freq: Q @ Freq
+        Frequency - Self Resonant: Fres
+        Shielding: Shielding
+        Material - Core: Core
+        Size / Dimension: Size/Dimension
+        Part Status: Status
+    Rear: *rear_params
+
+Potentiometers:
+    Taxonomies:
+        - Potentiometers, Variable Resistors/Trimmer Potentiometers
+    Front: *front_params
+    Parameters:
+        Size / Dimension: Dimension
+        Resistance: Resistance
+        Tolerance: Tolerance
+        Power (Watts): Power
+        Temperature Coefficient: Temp. Coeff.
+        Number of Turns: Turns
+        Adjustment Type: Adjustment Type
+        Mounting Type: Mounting Type
+        Part Status: Status
+    Rear: *rear_params
+
 Diodes:
     Taxonomies:
         - Discrete Semiconductor Products/Diodes - Rectifiers - Single
@@ -354,6 +389,27 @@ Power Distributors and Drivers:
         Part Status: Status
     Rear: *rear_params
 
+Optocouplers:
+    Taxonomies:
+        - Isolators/Optoisolators - Triac, SCR Output
+        - Isolators/Optoisolators - Transistor, Photovoltaic Output
+    Front: *front_params
+    Parameters:
+        Package / Case: Package
+        Output Type: Output Type
+        Input Type: Input Type
+        Number of Channels: Channels
+        Voltage - Isolation: Isolation Voltage
+        Voltage - Forward (Vf) (Typ): Vf
+        ^Voltage - (Off State|Output \(Max\)): Output Voltage (Max)
+        ^Current - (On State.*|Output.*): Output Current (Max)
+        Turn On Time: Turn On Time
+        ^(Static dV/dt.*|Rise / Fall Time.*): Slew Rate/Rise,Fall Time
+        Current Transfer Ratio (Min): Current Transf. Ratio (Min)
+        Current Transfer Ratio (Max): Current Transf. Ratio (Max)
+        Part Status: Status
+    Rear: *rear_params
+
 LEDs:
     Taxonomies:
         - Optoelectronics/LED Indication - Discrete
@@ -386,6 +442,99 @@ Color Sensors:
         Output: Output Signal
         Resolution (Bits): Resolution (Bits)
         Features: Features
+        Part Status: Status
+    Rear: *rear_params
+
+Microphones:
+    Taxonomies:
+        - Audio Products/Microphones
+    Front: *front_params
+    Parameters:
+        Package / Case: Package
+        Frequency Range: Frequency Range
+        Sensitivity: Sensitivity
+        S/N Ratio: SNR
+        Direction: Direction
+        Impedance: Impedance
+        Type: Type
+        Output Type: Output
+        Voltage Range: Voltage Range
+        Current - Supply: Supply Current
+        Part Status: Status
+    Rear: *rear_params
+
+Magnetic Sensors:
+    Taxonomies:
+        - Sensors, Transducers/Magnetic Sensors - Linear, Compass (ICs)
+    Front: *front_params
+    Parameters:
+        Package / Case: Package
+        Sensing Range: Sensing Range
+        Axis: Axis
+        Output Type: Output Type        
+        Technology: Technology
+        Current - Output (Max): Output Current (Max)
+        Voltage - Supply: Supply Voltage
+        Current - Supply (Max): Supply Current
+        Features: Features
+        Part Status: Status
+    Rear: *rear_params
+
+Current Sensors:
+    Taxonomies:
+        - Sensors, Transducers/Current Sensors
+    Front: *front_params
+    Parameters:
+        Package / Case: Package
+        For Measuring: Current Type(s)
+        Current - Sensing: Current Sensing
+        Sensitivity: Sensitivity
+        Output: Output
+        Number of Channels: Channels
+        Frequency: Frequency
+        Linearity: Linearity
+        Accuracy: Accuracy
+        Polarization: Polarization
+        Sensor Type: Sensor Type
+        Voltage - Supply: Supply Voltage
+        Part Status: Status
+    Rear: *rear_params
+
+Connectors:
+    Taxonomies:
+        - Connectors, Interconnects/Rectangular Connectors/Headers, Male Pins
+    Front: *front_params
+    Parameters:
+        Package / Case: Package
+        Connector Type: Conn. Type
+        Contact Type: Contact Type
+        Pitch - Mating: Pitch
+        Number of Positions: Positions
+        Number of Rows: Rows
+        Shrouding: Shrouding
+        Mounting Type: Mounting Type
+        Current Rating (Amps): Current
+        Voltage Rating: Voltage
+        series: Series
+        Part Status: Status
+    Rear: *rear_params
+
+Slide Switches:
+    Taxonomies:
+        - Switches/DIP Switches
+    Front: *front_params
+    Parameters:
+        Package / Case: Package
+        Circuit: Circuit
+        Number of Positions: Positions
+        Current Rating (Amps): Current
+        Voltage Rating: Voltage
+        Voltage Rating - AC: Voltage (AC)
+        Voltage Rating - DC: Voltage (DC)
+        Contact Timing: Contact Timing
+        Actuator Type: Actuator Type
+        Mounting Type: Mounting Type
+        Pitch: Pitch    
         Part Status: Status
     Rear: *rear_params
     
